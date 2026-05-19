@@ -1,0 +1,1697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard Keuangan</title>
+
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+/>
+
+<style>
+
+/* =========================================
+RESET
+========================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Inter, Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+    color:#1e293b;
+}
+
+/* =========================================
+TOPBAR
+========================================= */
+
+.topbar{
+    height:72px;
+
+    background:linear-gradient(
+        90deg,
+        #114084,
+        #0ab7c7
+    );
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 28px;
+
+    color:#fff;
+
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:700;
+}
+
+.profile{
+    background:rgba(255,255,255,.14);
+
+    padding:10px 16px;
+
+    border-radius:14px;
+
+    font-size:14px;
+    font-weight:600;
+}
+
+/* =========================================
+LAYOUT
+========================================= */
+
+.layout{
+    display:flex;
+}
+
+/* =========================================
+SIDEBAR
+========================================= */
+
+.sidebar{
+    width:250px;
+    min-height:calc(100vh - 72px);
+
+    background:linear-gradient(
+        180deg,
+        #114084,
+        #0ab7c7
+    );
+
+    padding:28px 18px;
+
+    color:#fff;
+}
+
+.sidebar-title{
+    font-size:12px;
+    font-weight:600;
+
+    opacity:.7;
+
+    margin-bottom:18px;
+
+    letter-spacing:1px;
+}
+
+.menu{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.menu-item{
+    padding:14px 16px;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+    font-size:15px;
+}
+
+.menu-item:hover{
+    background:rgba(255,255,255,.08);
+}
+
+.menu-item.active{
+    background:rgba(255,255,255,.14);
+
+    font-weight:600;
+}
+
+/* =========================================
+CONTENT
+========================================= */
+
+.content{
+    flex:1;
+    padding:32px;
+}
+
+/* =========================================
+HEADER
+========================================= */
+
+.page-header{
+    margin-bottom:30px;
+}
+
+.page-header h1{
+    font-size:32px;
+    margin-bottom:8px;
+}
+
+.page-header p{
+    color:#64748b;
+    font-size:15px;
+}
+
+/* =========================================
+CARD GRID
+========================================= */
+
+.card-grid{
+    display:grid;
+
+    grid-template-columns:
+        1fr
+        1.4fr
+        1.2fr;
+
+    gap:22px;
+}
+
+/* =========================================
+CARD
+========================================= */
+
+.dashboard-card{
+    background:#fff;
+
+    border-radius:24px;
+
+    padding:24px;
+
+    border:1px solid #e8edf5;
+
+    transition:.25s ease;
+}
+
+.dashboard-card:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 16px 30px rgba(15,23,42,.06);
+}
+
+.card-heading{
+    font-size:18px;
+    font-weight:700;
+
+    color:#0f172a;
+}
+
+.card-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:22px;
+}
+
+.card-icon{
+    width:58px;
+    height:58px;
+
+    border-radius:18px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#fff;
+    font-size:22px;
+}
+
+.bg-purple{
+    background:linear-gradient(
+        135deg,
+        #7c3aed,
+        #a855f7
+    );
+}
+
+.bg-blue{
+    background:linear-gradient(
+        135deg,
+        #2563eb,
+        #38bdf8
+    );
+}
+
+.bg-green{
+    background:linear-gradient(
+        135deg,
+        #10b981,
+        #34d399
+    );
+}
+
+/* =========================================
+INFO TOOLTIP
+========================================= */
+
+.info-wrapper{
+    position:relative;
+}
+
+.info-icon{
+    width:34px;
+    height:34px;
+
+    border-radius:12px;
+
+    background:#f1f5f9;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#64748b;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.info-icon:hover{
+    background:#e2e8f0;
+}
+
+.tooltip{
+    position:absolute;
+
+    top:45px;
+    right:0;
+
+    width:240px;
+
+    background:#0f172a;
+
+    color:#fff;
+
+    padding:14px;
+
+    border-radius:14px;
+
+    font-size:13px;
+    line-height:1.6;
+
+    opacity:0;
+    visibility:hidden;
+
+    transition:.2s;
+
+    z-index:10;
+}
+
+.info-wrapper:hover .tooltip{
+    opacity:1;
+    visibility:visible;
+}
+
+/* =========================================
+CARD NUMBER
+========================================= */
+
+.card-number{
+    font-size:46px;
+    font-weight:700;
+
+    margin-top:24px;
+
+    cursor:pointer;
+
+    width:fit-content;
+
+    transition:.2s;
+}
+
+.card-number:hover{
+    color:#2563eb;
+}
+
+.card-title{
+    margin-top:6px;
+
+    color:#64748b;
+
+    font-size:15px;
+}
+
+/* =========================================
+PROCESS GROUP
+========================================= */
+
+.process-group{
+    margin-top:22px;
+
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.process-item{
+    background:#f8fafc;
+
+    border:1px solid #edf2f7;
+
+    border-radius:18px;
+
+    padding:16px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.process-item:hover{
+    background:#fff;
+
+    border-color:#dbe7f5;
+}
+
+.process-name{
+    font-size:14px;
+    font-weight:600;
+}
+
+.process-desc{
+    margin-top:5px;
+
+    font-size:13px;
+    color:#64748b;
+}
+
+.process-count{
+    width:46px;
+    height:46px;
+
+    border-radius:14px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#fff;
+
+    font-size:16px;
+    font-weight:700;
+
+    background:linear-gradient(
+        135deg,
+        #2563eb,
+        #38bdf8
+    );
+}
+
+.process-count.success{
+    background:linear-gradient(
+        135deg,
+        #10b981,
+        #34d399
+    );
+}
+
+/* =========================================
+DRAWER
+========================================= */
+
+.drawer-overlay{
+    position:fixed;
+    inset:0;
+
+    background:rgba(15,23,42,.45);
+
+    opacity:0;
+    visibility:hidden;
+
+    transition:.25s;
+
+    z-index:999;
+}
+
+.drawer-overlay.active{
+    opacity:1;
+    visibility:visible;
+}
+
+.drawer{
+    position:fixed;
+
+    top:0;
+    right:-100%;
+
+    width:92%;
+    height:100vh;
+
+    background:#fff;
+
+    z-index:1000;
+
+    transition:.3s ease;
+
+    overflow-y:auto;
+
+    padding:30px;
+}
+
+.drawer.active{
+    right:0;
+}
+
+/* =========================================
+DRAWER HEADER
+========================================= */
+
+.drawer-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:26px;
+}
+
+.drawer-title h2{
+    font-size:28px;
+}
+
+.drawer-title p{
+    margin-top:6px;
+
+    color:#64748b;
+    font-size:14px;
+}
+
+.close-btn{
+    width:42px;
+    height:42px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#f1f5f9;
+
+    cursor:pointer;
+
+    font-size:18px;
+}
+
+/* =========================================
+FILTER
+========================================= */
+
+.filter-area{
+    display:flex;
+    gap:14px;
+
+    margin-bottom:22px;
+}
+
+.filter-area input,
+.filter-area select{
+    height:46px;
+
+    border:1px solid #dbe2ea;
+
+    border-radius:14px;
+
+    padding:0 14px;
+}
+
+.filter-area select{
+    flex:0 0 220px;
+    min-width:220px;
+
+    appearance:none;
+    -webkit-appearance:none;
+
+    padding-right:44px;
+
+    background-color:#fff;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M3 4.5L6 7.5L9 4.5' stroke='%2364748b' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position:right 16px center;
+    background-size:12px;
+}
+
+.filter-area input{
+    flex:1;
+}
+
+/* =========================================
+TABLE
+========================================= */
+
+.document-list{
+    margin-top:10px;
+    width:100%;
+}
+
+.empty-state{
+    padding:32px 18px;
+
+    border:1px dashed #dbe2ea;
+    border-radius:18px;
+
+    background:#f8fafc;
+
+    text-align:center;
+    color:#64748b;
+    font-size:14px;
+}
+
+.list-header{
+    display:grid;
+
+    grid-template-columns:
+        .6fr
+        1.15fr
+        1.25fr
+        .9fr
+        1.1fr
+        .75fr
+        .5fr
+        .85fr
+        90px;
+
+    gap:12px;
+
+    padding:16px 18px;
+
+    background:#f8fafc;
+
+    border-radius:16px;
+
+    font-size:12px;
+    font-weight:700;
+
+    color:#64748b;
+
+    margin-bottom:12px;
+}
+
+.list-header.no-approval,
+.list-row.no-approval{
+    grid-template-columns:
+        .7fr
+        1.35fr
+        1fr
+        1.25fr
+        .8fr
+        .55fr
+        .95fr
+        90px;
+}
+
+.list-row{
+    display:grid;
+
+    grid-template-columns:
+        .6fr
+        1.15fr
+        1.25fr
+        .9fr
+        1.1fr
+        .75fr
+        .5fr
+        .85fr
+        90px;
+
+    gap:12px;
+
+    align-items:start;
+
+    background:#fff;
+
+    border:1px solid #edf2f7;
+
+    border-radius:18px;
+
+    padding:18px;
+
+    margin-bottom:12px;
+
+    transition:.2s;
+}
+
+.list-row:hover{
+    border-color:#dbe7f5;
+
+    box-shadow:
+        0 8px 20px rgba(15,23,42,.05);
+}
+
+.ref-number{
+    font-weight:600;
+    overflow-wrap:anywhere;
+}
+
+.ref-date{
+    margin-top:5px;
+
+    font-size:12px;
+    color:#64748b;
+}
+
+.badge{
+    display:inline-flex;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:6px 12px;
+
+    border-radius:30px;
+
+    font-size:12px;
+    font-weight:600;
+
+    max-width:100%;
+    text-align:center;
+    white-space:normal;
+}
+
+.badge-form{
+    background:#eff6ff;
+    color:#2563eb;
+}
+
+.badge-status{
+    background:#ecfeff;
+    color:#0891b2;
+}
+
+.col-title{
+    line-height:1.5;
+    font-size:14px;
+    min-width:0;
+    overflow-wrap:anywhere;
+}
+
+.col-amount{
+    font-weight:700;
+    text-align:right;
+    white-space:nowrap;
+}
+
+.col-action{
+    display:flex;
+    justify-content:flex-end;
+}
+
+.list-header > div,
+.list-row > div{
+    min-width:0;
+}
+
+.review-btn{
+    border:none;
+
+    background:linear-gradient(
+        90deg,
+        #114084,
+        #0ab7c7
+    );
+
+    color:#fff;
+
+    padding:10px 14px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:13px;
+    font-weight:600;
+}
+
+/* =========================================
+RESPONSIVE
+========================================= */
+
+@media(max-width:1100px){
+
+    .document-list{
+        overflow-x:auto;
+    }
+
+    .list-header,
+    .list-row{
+        min-width:980px;
+    }
+
+    .list-header.no-approval,
+    .list-row.no-approval{
+        min-width:820px;
+    }
+
+}
+
+@media(max-width:1200px){
+
+    .card-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:900px){
+
+    .sidebar{
+        display:none;
+    }
+
+    .drawer{
+        width:100%;
+    }
+
+    .content{
+        padding:20px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =========================================
+TOPBAR
+========================================= -->
+
+<div class="topbar">
+
+    <div class="logo">
+        PLN Nusantara Renewables
+    </div>
+
+    <div
+    class="profile"
+    id="profileLabel">
+        ADMINISTRATOR
+    </div>
+
+</div>
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+
+    <div class="sidebar">
+
+        <div class="sidebar-title">
+            MENU
+        </div>
+
+        <div class="menu">
+
+            <div class="menu-item active">
+                Dashboard
+            </div>
+
+            <div class="menu-item">
+                Persetujuan
+            </div>
+
+            <div class="menu-item">
+                History Approval
+            </div>
+
+            <div class="menu-item">
+                Pembayaran Internal
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- CONTENT -->
+
+    <div class="content">
+
+        <div class="page-header">
+
+            <h1>
+                Dashboard Keuangan
+            </h1>
+
+            <p>
+                Monitoring approval dan pembayaran dokumen keuangan
+            </p>
+
+        </div>
+
+        <div class="card-grid">
+
+            <!-- DOKUMEN MASUK -->
+
+            <div class="dashboard-card">
+
+                <div class="card-top">
+
+                    <div class="card-heading">
+                        Dokumen Masuk
+                    </div>
+
+                    <!-- <div class="card-icon bg-purple">
+                        <i class="fa-regular fa-folder-open"></i>
+                    </div> -->
+
+                    <div class="info-wrapper">
+
+                        <div class="info-icon">
+                            <i class="fa-solid fa-circle-info"></i>
+                        </div>
+
+                        <div class="tooltip">
+                            Menampilkan total dokumen status 1 dan 2 yang masih berada di proses awal sebelum masuk ke verifikasi keuangan.
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div
+                class="card-number"
+                onclick="openDrawer('Dokumen Masuk','masuk')">
+                    197
+                </div>
+
+                <!-- <div class="card-title">
+                    Status 1 - 2
+                </div> -->
+
+            </div>
+
+            <!-- DOKUMEN PROSES -->
+
+            <div class="dashboard-card">
+
+                <div class="card-top">
+
+                    <div class="card-heading">
+                        Dokumen Proses
+                    </div>
+
+                    <!-- <div class="card-icon bg-blue">
+                        <i class="fa-solid fa-list-check"></i>
+                    </div> -->
+
+                    <div class="info-wrapper">
+
+                        <div class="info-icon">
+                            <i class="fa-solid fa-circle-info"></i>
+                        </div>
+
+                        <div class="tooltip">
+                            Menampilkan dokumen yang sedang berada di approval Staff Keuangan, Manager Keuangan, dan Direktur Keuangan.
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div
+                class="card-number"
+                onclick="openDrawer('Dokumen Proses','proses')">
+                    22
+                </div>
+
+                <!-- <div class="card-title">
+                    Approval Berjalan
+                </div> -->
+
+                <div class="process-group">
+
+                    <div
+                    class="process-item"
+                    onclick="openDrawer('Dokumen Proses Staff Keuangan','staff')">
+
+                        <div>
+
+                            <div class="process-name">
+                                Staff Keuangan
+                            </div>
+
+                            <div class="process-desc">
+                                Approval Verifikator Keuangan
+                            </div>
+
+                        </div>
+
+                        <div class="process-count">
+                            14
+                        </div>
+
+                    </div>
+
+                    <div
+                    class="process-item"
+                    onclick="openDrawer('Dokumen Proses Manager Keuangan','manager')">
+
+                        <div>
+
+                            <div class="process-name">
+                                Manager Keuangan
+                            </div>
+
+                            <div class="process-desc">
+                                Approval Manager
+                            </div>
+
+                        </div>
+
+                        <div class="process-count">
+                            6
+                        </div>
+
+                    </div>
+
+                    <div
+                    class="process-item"
+                    onclick="openDrawer('Dokumen Proses Direktur Keuangan','direktur')">
+
+                        <div>
+
+                            <div class="process-name">
+                                Direktur Keuangan
+                            </div>
+
+                            <div class="process-desc">
+                                Approval Direktur
+                            </div>
+
+                        </div>
+
+                        <div class="process-count">
+                            2
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- DOKUMEN SELESAI -->
+
+            <div class="dashboard-card">
+
+                <div class="card-top">
+
+                    <div class="card-heading">
+                        Dokumen Selesai
+                    </div>
+
+                    <!-- <div class="card-icon bg-green">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div> -->
+
+                    <div class="info-wrapper">
+
+                        <div class="info-icon">
+                            <i class="fa-solid fa-circle-info"></i>
+                        </div>
+
+                        <div class="tooltip">
+                            Menampilkan dokumen yang sudah selesai diverifikasi dan dokumen yang sudah selesai dibayarkan.
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div
+                class="card-number"
+                onclick="openDrawer('Dokumen Selesai','selesai')">
+                    119
+                </div>
+
+                <!-- <div class="card-title">
+                    Status 5 - 6
+                </div> -->
+
+                <div class="process-group">
+
+                    <div
+                    class="process-item"
+                    onclick="openDrawer('Dokumen Selesai Verifikasi','verifikasi')">
+
+                        <div>
+
+                            <div class="process-name">
+                                Selesai Verifikasi
+                            </div>
+
+                            <!-- <div class="process-desc">
+                                Status 5
+                            </div> -->
+
+                        </div>
+
+                        <div class="process-count success">
+                            95
+                        </div>
+
+                    </div>
+
+                    <div
+                    class="process-item"
+                    onclick="openDrawer('Dokumen Selesai Terbayar','terbayar')">
+
+                        <div>
+
+                            <div class="process-name">
+                                Selesai Terbayar
+                            </div>
+
+                            <!-- <div class="process-desc">
+                                Status 6
+                            </div> -->
+
+                        </div>
+
+                        <div class="process-count success">
+                            24
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =========================================
+DRAWER DETAIL
+========================================= -->
+
+<div
+class="drawer-overlay"
+id="overlay"
+onclick="closeDrawer()"></div>
+
+<div
+class="drawer"
+id="drawer">
+
+    <div class="drawer-header">
+
+        <div class="drawer-title">
+
+            <h2 id="drawerTitle">
+                Detail Dokumen
+            </h2>
+
+            <!-- <p>
+                Detail dokumen berdasarkan kategori dashboard
+            </p> -->
+
+        </div>
+
+        <button
+        class="close-btn"
+        onclick="closeDrawer()">
+            ✕
+        </button>
+
+    </div>
+
+    <!-- FILTER -->
+
+    <div class="filter-area">
+
+        <select id="formFilter">
+            <option value="all">Semua Form</option>
+            <option value="PSKT">PSKT</option>
+            <option value="LPJPSKT">LPJPSKT</option>
+            <option value="PBLS">PBLS</option>
+            <option value="PNPO">PNPO</option>
+            <option value="KASK">KASK</option>
+            <option value="LPJKASK">LPJKASK</option>
+            <option value="SPPD">SPPD</option>
+            <option value="REIMB">REIMB</option>
+        </select>
+
+        <input
+        id="searchInput"
+        type="text"
+        placeholder="Cari ID, Approval, Ref, PIC, Pemohon, atau Uraian">
+
+    </div>
+
+    <!-- TABLE -->
+
+    <div class="document-list">
+
+        <div
+        class="list-header"
+        id="tableHeader"></div>
+
+        <div id="tableBody"></div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* =========================================
+DUMMY DATA
+========================================= */
+
+const dummyData = {
+
+    masuk:[
+        {
+            id:'6841',
+            approval:'Persetujuan Manager SDM',
+            pic:'6994111JA - ANDI PRATAMA',
+            pemohon:'BUDI SANTOSO',
+            uraian:'Pengadaan Laptop Operasional',
+            nilai:'25.000.000',
+            form:'PNPO',
+            ref:'001/PNPO/V/2026'
+        },
+        {
+            id:'6842',
+            approval:'Persetujuan Manager SDM',
+            pic:'6994222JA - DEVI RAHMA',
+            pemohon:'RIZKY',
+            uraian:'Perjalanan Dinas Jakarta',
+            nilai:'8.500.000',
+            form:'SPPD',
+            ref:'002/SPPD/V/2026'
+        }
+    ],
+
+    proses:[
+        {
+            id:'6872',
+            approval:'Verifikasi Staff Keuangan',
+            pic:'6994333JA - NINA APRILIA',
+            pemohon:'HISYAM',
+            uraian:'Pengadaan Server Monitoring',
+            nilai:'120.000.000',
+            form:'PNPO',
+            ref:'010/PNPO/V/2026'
+        },
+        {
+            id:'6873',
+            approval:'Verifikasi Manager Keuangan',
+            pic:'6994555JA - AGUS SALIM',
+            pemohon:'HANDAYANI',
+            uraian:'Reimburse Konsumsi Meeting',
+            nilai:'950.000',
+            form:'REIMB',
+            ref:'011/REIMB/V/2026'
+        },
+        {
+            id:'6874',
+            approval:'Verifikasi Direktur Keuangan',
+            pic:'6994999JA - RUDY HERTANTO',
+            pemohon:'HISYAM LUTHFI',
+            uraian:'Meeting UAT',
+            nilai:'20.000.000',
+            form:'PNPO',
+            ref:'93/PNPO/IV/2026'
+        }
+    ],
+
+    staff:[
+        {
+            id:'6872',
+            approval:'Verifikasi Staff Keuangan',
+            pic:'6994333JA - NINA APRILIA',
+            pemohon:'HISYAM',
+            uraian:'Pengadaan Server Monitoring',
+            nilai:'120.000.000',
+            form:'PNPO',
+            ref:'010/PNPO/V/2026'
+        }
+    ],
+
+    manager:[
+        {
+            id:'6873',
+            approval:'Verifikasi Manager Keuangan',
+            pic:'6994555JA - AGUS SALIM',
+            pemohon:'HANDAYANI',
+            uraian:'Reimburse Konsumsi Meeting',
+            nilai:'950.000',
+            form:'REIMB',
+            ref:'011/REIMB/V/2026'
+        }
+    ],
+
+    direktur:[
+        {
+            id:'6874',
+            approval:'Verifikasi Direktur Keuangan',
+            pic:'6994999JA - RUDY HERTANTO',
+            pemohon:'HISYAM LUTHFI',
+            uraian:'Meeting UAT',
+            nilai:'20.000.000',
+            form:'PNPO',
+            ref:'93/PNPO/IV/2026'
+        }
+    ],
+
+    selesai:[
+        {
+            id:'6901',
+            approval:'Selesai Verifikasi',
+            pic:'6994777JA - YOGA PRATAMA',
+            pemohon:'DEWI',
+            uraian:'Pengadaan CCTV Area Kantor',
+            nilai:'42.000.000',
+            form:'PNPO',
+            ref:'090/PNPO/V/2026'
+        },
+        {
+            id:'6902',
+            approval:'Selesai Dibayar',
+            pic:'6994888JA - MELISA PUTRI',
+            pemohon:'MELISA',
+            uraian:'Perjalanan Dinas Bali',
+            nilai:'18.500.000',
+            form:'SPPD',
+            ref:'092/SPPD/V/2026'
+        }
+    ],
+
+    verifikasi:[
+        {
+            id:'6901',
+            approval:'Selesai Verifikasi',
+            pic:'6994777JA - YOGA PRATAMA',
+            pemohon:'YOGA',
+            uraian:'Pengadaan Printer',
+            nilai:'7.500.000',
+            form:'PNPO',
+            ref:'091/PNPO/V/2026'
+        }
+    ],
+
+    terbayar:[
+        {
+            id:'6902',
+            approval:'Selesai Dibayar',
+            pic:'6994888JA - MELISA PUTRI',
+            pemohon:'MELISA',
+            uraian:'Perjalanan Dinas Bali',
+            nilai:'18.500.000',
+            form:'SPPD',
+            ref:'092/SPPD/V/2026'
+        }
+    ]
+
+};
+
+const searchInput = document.getElementById("searchInput");
+const formFilter = document.getElementById("formFilter");
+const profileLabel = document.getElementById("profileLabel");
+
+let currentCategory = null;
+
+/* =========================================
+ROLE-BASED REVIEW
+========================================= */
+
+// Mapping ini menentukan kategori drawer mana yang boleh membuka
+// halaman approval, sekaligus target mock approval per role.
+// Jika halaman approval final sudah tersedia, cukup ganti nilai
+// `target` ke URL approval sebenarnya.
+const reviewAccessMap = {
+    staff:{
+        role:"staff",
+        roleLabel:"Staff Keuangan",
+        target:"../images/Persetujuan Staf Keuangan.png"
+    },
+    manager:{
+        role:"manager",
+        roleLabel:"Manager Keuangan",
+        target:"../images/Persetujuan Manajer Keuangan.png"
+    },
+    direktur:{
+        role:"direktur",
+        roleLabel:"Direktur Keuangan",
+        target:"../images/Persetujuan Direktur Keuangan.png"
+    }
+};
+
+// Halaman ini dipakai sebagai fallback saat user membuka Review
+// dari kategori yang tidak sesuai dengan role approver-nya.
+const approvalInstanceTarget = "./approval-instance.html";
+
+// Role login dibaca dari label profile agar mock UI tetap sinkron
+// dengan user yang sedang ditampilkan di dashboard.
+// Untuk testing mock login, isi profile bisa diganti menjadi:
+// STAFF KEUANGAN / MANAGER KEUANGAN / DIREKTUR KEUANGAN.
+function getLoggedInRole(){
+
+    const normalizedRole = profileLabel.innerText.trim().toLowerCase();
+
+    if(normalizedRole.includes("staff keuangan")){
+        return "staff";
+    }
+
+    if(normalizedRole.includes("manager keuangan")){
+        return "manager";
+    }
+
+    if(normalizedRole.includes("direktur keuangan")){
+        return "direktur";
+    }
+
+    return "administrator";
+}
+
+function getReviewConfig(category){
+    return reviewAccessMap[category] || null;
+}
+
+// Hanya kategori proses role yang sesuai yang boleh masuk ke halaman
+// approval approver. Kondisi lain tetap membuka instance dokumen.
+function canOpenApproval(category){
+
+    const reviewConfig = getReviewConfig(category);
+
+    if(!reviewConfig){
+        return false;
+    }
+
+    return getLoggedInRole() === reviewConfig.role;
+}
+
+function getReviewButtonTitle(category){
+
+    const reviewConfig = getReviewConfig(category);
+
+    if(!reviewConfig){
+        return "Buka instance approval dokumen di tab baru";
+    }
+
+    if(canOpenApproval(category)){
+        return "Buka approval dokumen di tab baru";
+    }
+
+    return `Buka instance approval dokumen. Approval aktif hanya untuk ${reviewConfig.roleLabel}.`;
+}
+
+function getDocumentByCategoryAndId(category,documentId){
+    return (dummyData[category] || []).find((item)=>item.id === documentId) || null;
+}
+
+// Data dokumen dikirim lewat query string agar halaman instance
+// bisa menampilkan record yang benar-benar dipilih dari tabel.
+function buildApprovalInstanceUrl(category,item){
+
+    const queryParams = new URLSearchParams({
+        category,
+        loginRole:getLoggedInRole(),
+        id:item.id,
+        approval:item.approval,
+        pic:item.pic,
+        pemohon:item.pemohon,
+        uraian:item.uraian,
+        nilai:item.nilai,
+        form:item.form,
+        ref:item.ref
+    });
+
+    return `${approvalInstanceTarget}?${queryParams.toString()}`;
+}
+
+function openReviewTarget(category,documentId){
+
+    const reviewConfig = getReviewConfig(category);
+    const documentItem = getDocumentByCategoryAndId(category,documentId);
+
+    if(reviewConfig && canOpenApproval(category)){
+        window.open(
+            encodeURI(reviewConfig.target),
+            "_blank",
+            "noopener"
+        );
+
+        return;
+    }
+
+    if(!documentItem){
+        return;
+    }
+
+    window.open(
+        buildApprovalInstanceUrl(category,documentItem),
+        "_blank",
+        "noopener"
+    );
+}
+
+function shouldHideApprovalColumn(category){
+    return category === "verifikasi" || category === "terbayar";
+}
+
+function renderTableHeader(){
+
+    const hideApproval = shouldHideApprovalColumn(currentCategory);
+    const tableHeader = document.getElementById("tableHeader");
+
+    tableHeader.className = hideApproval
+        ? "list-header no-approval"
+        : "list-header";
+
+    tableHeader.innerHTML = hideApproval
+        ? `
+            <div>ID</div>
+            <div>PIC</div>
+            <div>Pemohon</div>
+            <div>Uraian</div>
+            <div>Nilai</div>
+            <div>Form</div>
+            <div>Ref</div>
+            <div>Action</div>
+        `
+        : `
+            <div>ID</div>
+            <div>Approval</div>
+            <div>PIC</div>
+            <div>Pemohon</div>
+            <div>Uraian</div>
+            <div>Nilai</div>
+            <div>Form</div>
+            <div>Ref</div>
+            <div>Action</div>
+        `;
+}
+
+/* =========================================
+OPEN DRAWER
+========================================= */
+
+function openDrawer(title,key){
+
+    currentCategory = key;
+
+    document
+    .getElementById("drawer")
+    .classList.add("active");
+
+    document
+    .getElementById("overlay")
+    .classList.add("active");
+
+    document
+    .getElementById("drawerTitle")
+    .innerText = title;
+
+    searchInput.value = "";
+    formFilter.value = "all";
+
+    renderTableHeader();
+    applyFilters();
+}
+
+/* =========================================
+APPLY FILTERS
+========================================= */
+
+function applyFilters(){
+
+    const baseData = dummyData[currentCategory] || [];
+    const keyword = searchInput.value.trim().toLowerCase();
+    const selectedForm = formFilter.value;
+
+    const filteredData = baseData.filter((item)=>{
+        const matchKeyword =
+            keyword === "" ||
+            item.id.toLowerCase().includes(keyword) ||
+            item.approval.toLowerCase().includes(keyword) ||
+            item.ref.toLowerCase().includes(keyword) ||
+            item.pic.toLowerCase().includes(keyword) ||
+            item.pemohon.toLowerCase().includes(keyword) ||
+            item.uraian.toLowerCase().includes(keyword);
+
+        const matchForm =
+            selectedForm === "all" ||
+            item.form === selectedForm;
+
+        return matchKeyword && matchForm;
+    });
+
+    renderTable(filteredData);
+}
+
+/* =========================================
+RENDER TABLE
+========================================= */
+
+function renderTable(data){
+
+    const hideApproval = shouldHideApprovalColumn(currentCategory);
+    const rowClass = hideApproval
+        ? "list-row no-approval"
+        : "list-row";
+    const reviewTitle = getReviewButtonTitle(currentCategory);
+
+    if(!data.length){
+
+        document
+        .getElementById("tableBody")
+        .innerHTML = `
+            <div class="empty-state">
+                Tidak ada dokumen yang sesuai dengan pencarian atau filter.
+            </div>
+        `;
+
+        return;
+    }
+
+    let html = '';
+
+    data.forEach((item)=>{
+
+        html += `
+
+        <div class="${rowClass}">
+
+            <div class="ref-number">
+                ${item.id}
+            </div>
+
+            ${hideApproval ? "" : `
+            <div class="col-title">
+                ${item.approval}
+            </div>
+            `}
+
+            <div class="col-title">
+                ${item.pic}
+            </div>
+
+            <div class="col-title">
+                ${item.pemohon}
+            </div>
+
+            <div class="col-title">
+                ${item.uraian}
+            </div>
+
+            <div class="col-amount">
+                ${item.nilai}
+            </div>
+
+            <div>
+
+                <div class="badge badge-form">
+                    ${item.form}
+                </div>
+
+            </div>
+
+            <div class="col-title">
+                ${item.ref}
+            </div>
+
+            <div class="col-action">
+                <button
+                class="review-btn"
+                type="button"
+                data-review-category="${currentCategory}"
+                data-review-id="${item.id}"
+                title="${reviewTitle}">
+                    Review
+                </button>
+            </div>
+
+        </div>
+
+        `;
+    });
+
+    document
+    .getElementById("tableBody")
+    .innerHTML = html;
+}
+
+/* =========================================
+CLOSE DRAWER
+========================================= */
+
+function closeDrawer(){
+
+    document
+    .getElementById("drawer")
+    .classList.remove("active");
+
+    document
+    .getElementById("overlay")
+    .classList.remove("active");
+}
+
+// Event delegation dipakai karena tombol Review selalu dirender ulang
+// saat filter atau kategori drawer berubah.
+document
+.getElementById("tableBody")
+.addEventListener("click",(event)=>{
+
+    const reviewButton = event.target.closest("[data-review-category]");
+
+    if(!reviewButton){
+        return;
+    }
+
+    openReviewTarget(
+        reviewButton.dataset.reviewCategory,
+        reviewButton.dataset.reviewId
+    );
+});
+
+searchInput.addEventListener("input",applyFilters);
+formFilter.addEventListener("change",applyFilters);
+
+</script>
+
+</body>
+</html>

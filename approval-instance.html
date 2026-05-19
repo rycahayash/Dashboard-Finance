@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instance Approval Dokumen</title>
+
+<style>
+
+/* =========================================
+BASE
+========================================= */
+
+:root{
+    --bg:#edf3f9;
+    --panel:#ffffff;
+    --line:#dce5ef;
+    --text:#18324d;
+    --muted:#64748b;
+    --brand-a:#114084;
+    --brand-b:#0ab7c7;
+    --soft:#f8fbfe;
+    --warn-bg:#fff7ed;
+    --warn-text:#c2410c;
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:"Plus Jakarta Sans","Segoe UI",Tahoma,sans-serif;
+}
+
+body{
+    background:linear-gradient(180deg,#e8f0f8 0%,#f4f8fc 100%);
+    color:var(--text);
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:18px 28px;
+
+    background:linear-gradient(90deg,var(--brand-a),var(--brand-b));
+    color:#fff;
+}
+
+.brand{
+    font-size:15px;
+    font-weight:700;
+    letter-spacing:.02em;
+}
+
+.badge{
+    padding:10px 16px;
+    border-radius:999px;
+
+    background:rgba(255,255,255,.16);
+    border:1px solid rgba(255,255,255,.18);
+
+    font-size:12px;
+    font-weight:700;
+}
+
+.page{
+    max-width:1100px;
+    margin:0 auto;
+    padding:28px;
+}
+
+.hero,
+.panel{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:22px;
+    box-shadow:0 18px 36px rgba(17,64,132,.08);
+}
+
+.hero{
+    padding:28px;
+    margin-bottom:22px;
+}
+
+.hero h1{
+    font-size:30px;
+    margin-bottom:10px;
+}
+
+.hero p{
+    color:var(--muted);
+    line-height:1.6;
+}
+
+.summary-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:16px;
+
+    margin-top:22px;
+}
+
+.summary-card{
+    background:var(--soft);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:18px;
+}
+
+.summary-label{
+    font-size:12px;
+    font-weight:700;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    margin-bottom:8px;
+}
+
+.summary-value{
+    font-size:18px;
+    font-weight:700;
+    overflow-wrap:anywhere;
+}
+
+.panel{
+    padding:24px;
+}
+
+.panel + .panel{
+    margin-top:18px;
+}
+
+.panel-title{
+    font-size:20px;
+    font-weight:700;
+    margin-bottom:18px;
+}
+
+.notice{
+    background:var(--warn-bg);
+    color:var(--warn-text);
+    border:1px solid #fed7aa;
+    border-radius:16px;
+    padding:16px 18px;
+    line-height:1.6;
+}
+
+.detail-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:16px 20px;
+}
+
+.detail-item{
+    border:1px solid var(--line);
+    background:var(--soft);
+    border-radius:16px;
+    padding:16px 18px;
+}
+
+.detail-item.full{
+    grid-column:1 / -1;
+}
+
+.detail-label{
+    font-size:12px;
+    font-weight:700;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    margin-bottom:8px;
+}
+
+.detail-value{
+    font-size:15px;
+    font-weight:600;
+    line-height:1.6;
+    overflow-wrap:anywhere;
+}
+
+@media(max-width:800px){
+
+    .page{
+        padding:18px;
+    }
+
+    .summary-grid,
+    .detail-grid{
+        grid-template-columns:1fr;
+    }
+
+    .topbar{
+        padding:16px 18px;
+        gap:12px;
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+    <div class="brand">PLN Nusantara Renewables</div>
+    <div class="badge">INSTANCE APPROVAL DOKUMEN</div>
+</div>
+
+<div class="page">
+
+    <section class="hero">
+        <h1 id="pageTitle">Instance Approval Dokumen</h1>
+        <p id="pageSubtitle">
+            Halaman ini menampilkan instance approval dari dokumen yang dipilih pada dashboard.
+        </p>
+
+        <div class="summary-grid">
+            <div class="summary-card">
+                <div class="summary-label">ID Dokumen</div>
+                <div class="summary-value" id="summaryId">-</div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-label">Form</div>
+                <div class="summary-value" id="summaryForm">-</div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-label">Ref</div>
+                <div class="summary-value" id="summaryRef">-</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-title">Keterangan</div>
+        <div class="notice" id="instanceNotice">
+            Dokumen dibuka dalam mode instance approval.
+        </div>
+    </section>
+
+    <section class="panel">
+        <div class="panel-title">Detail Dokumen</div>
+
+        <div class="detail-grid">
+            <div class="detail-item">
+                <div class="detail-label">Approval</div>
+                <div class="detail-value" id="detailApproval">-</div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">PIC</div>
+                <div class="detail-value" id="detailPic">-</div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">Pemohon</div>
+                <div class="detail-value" id="detailPemohon">-</div>
+            </div>
+
+            <div class="detail-item">
+                <div class="detail-label">Nilai</div>
+                <div class="detail-value" id="detailNilai">-</div>
+            </div>
+
+            <div class="detail-item full">
+                <div class="detail-label">Uraian</div>
+                <div class="detail-value" id="detailUraian">-</div>
+            </div>
+
+            <div class="detail-item full">
+                <div class="detail-label">Kategori Dashboard</div>
+                <div class="detail-value" id="detailCategory">-</div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<script>
+
+/* =========================================
+READ INSTANCE DATA
+========================================= */
+
+// Halaman ini menerima data dokumen dari query string yang dikirim
+// oleh tombol Review pada dashboard utama.
+const queryParams = new URLSearchParams(window.location.search);
+
+function getValue(key){
+    return queryParams.get(key) || "-";
+}
+
+function setText(id,value){
+    document.getElementById(id).innerText = value;
+}
+
+function formatRole(role){
+
+    if(role === "staff"){
+        return "Staff Keuangan";
+    }
+
+    if(role === "manager"){
+        return "Manager Keuangan";
+    }
+
+    if(role === "direktur"){
+        return "Direktur Keuangan";
+    }
+
+    if(role === "administrator"){
+        return "Administrator";
+    }
+
+    return role || "-";
+}
+
+function formatCategory(category){
+
+    const categoryLabelMap = {
+        masuk:"Dokumen Masuk",
+        proses:"Dokumen Proses",
+        staff:"Dokumen Proses Staff Keuangan",
+        manager:"Dokumen Proses Manager Keuangan",
+        direktur:"Dokumen Proses Direktur Keuangan",
+        selesai:"Dokumen Selesai",
+        verifikasi:"Dokumen Selesai Verifikasi",
+        terbayar:"Dokumen Selesai Terbayar"
+    };
+
+    return categoryLabelMap[category] || category || "-";
+}
+
+const loginRole = getValue("loginRole");
+const documentId = getValue("id");
+const documentRef = getValue("ref");
+
+setText("pageTitle",`Instance Approval Dokumen ${documentId}`);
+setText(
+    "pageSubtitle",
+    `Dokumen ${documentRef} dibuka sebagai instance approval dari dashboard.`
+);
+
+setText("summaryId",documentId);
+setText("summaryForm",getValue("form"));
+setText("summaryRef",documentRef);
+
+setText("detailApproval",getValue("approval"));
+setText("detailPic",getValue("pic"));
+setText("detailPemohon",getValue("pemohon"));
+setText("detailNilai",getValue("nilai"));
+setText("detailUraian",getValue("uraian"));
+setText("detailCategory",formatCategory(getValue("category")));
+
+setText(
+    "instanceNotice",
+    `Dokumen ini dibuka dalam mode instance approval. Role login saat ini: ${formatRole(loginRole)}.`
+);
+
+</script>
+
+</body>
+</html>
